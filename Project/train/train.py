@@ -171,3 +171,5 @@ if __name__ == '__main__':
     model_path = os.path.join(args.model_dir, 'model.pth')
     with open(model_path, 'wb') as f:
         torch.save(model.cpu().state_dict(), f)
+
+

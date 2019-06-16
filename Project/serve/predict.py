@@ -69,11 +69,8 @@ def predict_fn(input_data, model):
     #       You should produce two variables:
     #         data_X   - A sequence of length 500 which represents the converted review
     #         data_len - The length of the review
-    sentence = review_to_words(input_data)
-    data_X = convert_and_pad_data(model.word_dict, (sentence,))[0]
-    data_len = len(sentence)
+    data_X, data_len = convert_and_pad(model.word_dict, review_to_words(input_data))
     
-
     # Using data_X and data_len we construct an appropriate input tensor. Remember
     # that our model expects input data of the form 'len, review[500]'.
     data_pack = np.hstack((data_len, data_X))
@@ -90,10 +87,11 @@ def predict_fn(input_data, model):
     # get the output from the model
     output = model(data)
     
-    # convert output probabilities to predicted class (0 or 1)
-    result = torch.round(output.squeeze()) 
-    
     # printing output value, before rounding
     print('Prediction value, pre-rounding: {:.6f}'.format(output.item()))
 
+    # convert output probabilities to predicted class (0 or 1)
+    result = round(output.item())
+
     return result
+
